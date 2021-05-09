@@ -98,21 +98,25 @@ def cleanup_audio_files(directory):
         if file.endswith('.wav'):
             os.remove(os.path.join(directory, file))
 
-for file in os.listdir(VIDEO_INPUT_DIRECTORY):
-    if not file.endswith('.mp4'):
-        continue
+def main():
+    for file in os.listdir(VIDEO_INPUT_DIRECTORY):
+        if not file.endswith('.mp4'):
+            continue
 
-    name = os.path.splitext(file)[0]
-    output_file = f'{OUTPUT_DIRECTORY}/{name}.txt'
+        name = os.path.splitext(file)[0]
+        output_file = f'{OUTPUT_DIRECTORY}/{name}.txt'
 
-    if os.path.exists(output_file):
-        print('file is already transcribed', file)
-    else:
-        print('converted to .wav file', file)
-        video_to_wav(file)
-        print('transcribing', file)
-        speech_to_text(OUTPUT_DIRECTORY+'/'+file, output_file)
+        if os.path.exists(output_file):
+            print('file is already transcribed', file)
+        else:
+            print('converted to .wav file', file)
+            video_to_wav(file)
+            print('transcribing', file)
+            speech_to_text(OUTPUT_DIRECTORY+'/'+file, output_file)
 
-print('complete, cleaning up intermediate audio files')
-cleanup_audio_files(OUTPUT_DIRECTORY)
+    print('complete, cleaning up intermediate audio files')
+    cleanup_audio_files(OUTPUT_DIRECTORY)
+
+if __name__ == "__main__":
+    main()
 

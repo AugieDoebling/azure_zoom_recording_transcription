@@ -77,9 +77,7 @@ def speech_to_text(audio_filename, output_file):
           file.write('\n\n')
 
 
-def video_to_wav(file):
-   name = os.path.splitext(file)[0]
-   output_file = f'{OUTPUT_DIRECTORY}/{name}.wav'
+def video_to_wav(file, output_file):
    if os.path.exists(output_file):
       print('file already converted', file)
    elif file.endswith('.mp4'):
@@ -104,15 +102,16 @@ def main():
             continue
 
         name = os.path.splitext(file)[0]
+        wav_file = f'{OUTPUT_DIRECTORY}/{name}.wav'
         output_file = f'{OUTPUT_DIRECTORY}/{name}.txt'
 
         if os.path.exists(output_file):
             print('file is already transcribed', file)
         else:
             print('converted to .wav file', file)
-            video_to_wav(file)
+            video_to_wav(file, wav_file)
             print('transcribing', file)
-            speech_to_text(OUTPUT_DIRECTORY+'/'+file, output_file)
+            speech_to_text(wav_file, output_file)
 
     print('complete, cleaning up intermediate audio files')
     cleanup_audio_files(OUTPUT_DIRECTORY)
